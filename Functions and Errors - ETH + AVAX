@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.26;
+
+contract FamilyBudget {
+    uint private parentIncome;
+    uint private educationCosts;
+    uint private livingExpenses;
+    uint private allowance;
+
+    function setBudgetItems(uint _parentIncome, uint _educationCosts, uint _livingExpenses) public {
+        parentIncome = _parentIncome; 
+        educationCosts = _educationCosts;
+        livingExpenses = _livingExpenses;
+        if (parentIncome < educationCosts + livingExpenses) {
+            revert("Income must exceed total expenses");
+        }
+    }
+    
+    function setChildAllowance(uint _allowance) public {
+        require(_allowance < 100, "Allowance should be less than 100");
+        allowance = _allowance;
+    }
+
+    function calculateRemainingFunds() public view returns (uint) {
+        uint remainingFunds = parentIncome - educationCosts - livingExpenses - allowance;
+        assert(remainingFunds < parentIncome);
+        return remainingFunds;
+    }
+}
+3rd course 1st assesment
